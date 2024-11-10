@@ -1,0 +1,17 @@
+Basic
+    1. Sales Processing -> adding items , calculating total
+    2. Inventory managment -> track stock , add new items, update prices
+Later
+    3. Payment processing -> (not highest priority)
+    e4. Sales report
+
+pos-backend/
+├── src/
+│   ├── main.rs       # Entry point
+│   ├── routes/       # API route handlers (sales, inventory, etc.)
+│   ├── models/       # Data models for products, sales, inventory
+│   ├── controllers/  # Business logic
+│   ├── services/     # Reusable services (e.g., payment processing)
+│   └── utils/        # Utility functions and helpers
+└── Cargo.toml
+   
