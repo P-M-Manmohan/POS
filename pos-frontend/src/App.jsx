@@ -1,5 +1,5 @@
 import { Route,createBrowserRouter,createRoutesFromElements,RouterProvider } from 'react-router-dom'
-import MainLayout from "./layout/MainLayout"
+import MainPage from "./pages/MainPage"
 import React from 'react'
 
 
@@ -21,7 +21,7 @@ const App = () => {
 
   const router=createBrowserRouter(
     createRoutesFromElements(
-    <Route path='/' element={ <MainLayout /> }>
+    <Route path='/' element={ <MainPage /> }>
     </Route>)
   )
 
