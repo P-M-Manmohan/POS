@@ -1,16 +1,16 @@
-use actix_web::{post, Responder, web, HttpResponse};
-use crate::models::product::{ProductId,Product};
+use actix_web::{get, Responder, web, HttpResponse};
+use crate::models::product::Product;
 use crate::database::DbPool;
 use sqlx::query_as;
 
 
-#[post("/product")]
+#[get("/product/{id}")]
 pub async fn get_product_details(
        db_pool: web::Data<DbPool>,
-       product_id: web::Json<ProductId>,
+       product_id: web::Path<i32>,
     ) -> impl Responder {
     
-    let product_id = product_id.id;
+    let product_id = product_id.into_inner();
 
     let product = query_as::<_,Product>("SELECT * FROM inventory WHERE id= $1")
         .bind(product_id)

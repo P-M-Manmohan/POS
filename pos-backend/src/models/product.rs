@@ -4,10 +4,10 @@ use bigdecimal::BigDecimal;
 
 #[derive(Serialize, Deserialize, FromRow, Debug)]
 pub struct Product{
-    id: i32,
-    name: String,
-    price: BigDecimal,
-    stock: i32,
+    pub id: i32,
+    pub name: String,
+    pub price: BigDecimal,
+    pub stock: i32,
 }
 
 

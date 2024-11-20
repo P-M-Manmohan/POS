@@ -1,13 +1,14 @@
 import Navbar from '../components/Navbar.jsx';
-import Table from '../components/Table.jsx';
+import Table from '../components/Table.jsx'; 
+import Modal from '../components/Modal.jsx';
 
-
-const MainPage = () => {
+const MainPage = () => { 
 
     return (
     <>
         <Navbar></Navbar>
         <Table></Table>
+        <Modal></Modal>
     </>
     )
 }   

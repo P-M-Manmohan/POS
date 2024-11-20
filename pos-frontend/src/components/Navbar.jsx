@@ -49,7 +49,9 @@ const Navbar = () => {
                 >Taxes</span>
       </div>
 
-    <div className='flex flex-1 items-center mr-2'>
+    <div className='Inventory flex flex-1 items-center mr-2'
+        onClick={()=> document.getElementById('modal1').showModal()}
+      >
             <img
             className='h-3 w-3 mr-2'
             src={box}

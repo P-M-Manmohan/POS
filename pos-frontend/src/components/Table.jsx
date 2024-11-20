@@ -6,6 +6,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import EditableField from './EditableField.jsx';
 
 const TAX_RATE = 0.07;
 
@@ -17,24 +18,15 @@ function priceRow(qty, unit) {
   return qty * unit;
 }
 
-function createRow(desc, qty, unit) {
-  const price = priceRow(qty, unit);
-  return { desc, qty, unit, price };
+function createRow(id, name, stock, unit) {
+  const price = priceRow(stock, parseInt(unit,10));
+  return { id, name, stock, unit, price };
 }
 
 function subtotal(items) {
-  return items.map(({ price }) => price).reduce((sum, i) => sum + i, 0);
+  return items != null ? items.map(({ price }) => price).reduce((sum, i) => sum + i, 0) : 0;
 }
 
-const rows = [
-  createRow('Paperclips (Box)', 100, 1.15),
-  createRow('Paper (Case)', 10, 45.99),
-  createRow('Waste Basket', 2, 17.99),
-];
-
-const invoiceSubtotal = subtotal(rows);
-const invoiceTaxes = TAX_RATE * invoiceSubtotal;
-const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
 export default function SpanningTable() {
 
@@ -46,50 +38,61 @@ export default function SpanningTable() {
                 `http://localhost:8080/product`
             );
             const json = await result.json();
-            console.log(json);
-            const rows = json.map(product => createRow(product.desc, product.qty, product.unit));
-            setProducts(rows);
-
-            console.log(products);
+            const records = json.map(product => createRow(product.id, product.name, product.stock, product.price));
+            setProducts(records);
+            //console.log(products);
         } catch (Err){
             console.log(Err);
         }
     }
+    // Log the updated products after state change and re-render
 
     useEffect(() => {
         getProducts();
     },[]);
 
+    const invoiceSubtotal = subtotal(products);
+    const invoiceTaxes = TAX_RATE * invoiceSubtotal;
+    const invoiceTotal = invoiceTaxes + invoiceSubtotal;
 
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 700 }} aria-label="spanning table">
         <TableHead>
           <TableRow>
-            <TableCell align="center" colSpan={3}>;
+            <TableCell align="center" colSpan={3}>
               Details
             </TableCell>
             <TableCell align="right">Price</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell>Desc</TableCell>
+            <TableCell>Id</TableCell>
+            <TableCell>Name</TableCell>
             <TableCell align="right">Qty.</TableCell>
             <TableCell align="right">Unit</TableCell>
             <TableCell align="right">Sum</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.desc}>
-              <TableCell>{row.desc}</TableCell>
-              <TableCell align="right">{row.qty}</TableCell>
-              <TableCell align="right">{row.unit}</TableCell>
-              <TableCell align="right">{ccyFormat(row.price)}</TableCell>
+            <TableRow key='input'>
+              <TableCell><EditableField type={'number'} className='max-w-5'/></TableCell>
+              <TableCell><EditableField type={"text"}/></TableCell>
+              <TableCell align="right"><EditableField type={'number'}/></TableCell>
+              <TableCell align="right"><EditableField type={ 'number' }/></TableCell>
+              <TableCell align="right"><EditableField type={ 'number' }/></TableCell>
+            </TableRow>
+          {products && products.map((product) => (
+            <TableRow key={product.name}>
+              <TableCell>{product.id}</TableCell>
+              <TableCell>{product.name}</TableCell>
+              <TableCell align="right">{product.stock}</TableCell>
+              <TableCell align="right">{product.unit}</TableCell>
+              <TableCell align="right">{ccyFormat(product.price)}</TableCell>
             </TableRow>
           ))}
           <TableRow>
             <TableCell rowSpan={3} />
-            <TableCell colSpan={2}>Subtotal</TableCell>
+            <TableCell colSpan={3}>Subtotal</TableCell>
             <TableCell align="right">{ccyFormat(invoiceSubtotal)}</TableCell>
           </TableRow>
           <TableRow>
