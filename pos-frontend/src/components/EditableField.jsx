@@ -1,12 +1,6 @@
 import { useState } from "react";
-import styled from "styled-components";
+import "../index.css";
 
-const StyledInput = styled.input`
-   style={{
-        appearance: "textfield",
-        MozAppearance: "textfield",
-        WebkitAppearance: "none",
-      }}`;
 
 const EditableField = ( { type } ) => {
   const [value, setValue] = useState("Enter");
@@ -32,23 +26,23 @@ const EditableField = ( { type } ) => {
   };
 
   return (
-    <div>
+      <>
+    <div className='h-5'>
       {isEditing ? (
-        <div className='max-w-fit'>
-          <StyledInput
+          <input
             type={type}
             value={tempValue}
             onChange={(e) => setTempValue(e.target.value)}
             onKeyDown={ (e) => handleKeyDown(e) }
-            className="flex w-fit"
+            className=" w-fit absolute outline-0"
             onBlur= { () => handleSave() }
             autoFocus
           />
-        </div>
       ) : (
-        <span onClick={() => setIsEditing(true)}>{value.length != 0 ? value : "Enter"}</span>
+        <span className="inline relative overflow-hidden" onClick={() => setIsEditing(true)}>{value.length != 0 ? value : "Enter"}</span>
       )}
     </div>
+      </>
   );
 };
 
