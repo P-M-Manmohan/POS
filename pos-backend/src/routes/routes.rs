@@ -9,6 +9,8 @@ use crate::controllers::delete_product;
 use crate::controllers::search;
 
 pub fn configure_routes(cfg: &mut web::ServiceConfig) {
+
+    println!("request recieved");
     cfg
         .service(hello::hello)
         .service(greet::greet)

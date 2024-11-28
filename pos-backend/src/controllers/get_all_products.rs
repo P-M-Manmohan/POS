@@ -9,7 +9,7 @@ pub async fn get_all_products(
        db_pool: web::Data<PgPool>,
     ) -> impl Responder {
 
-        log::info!("Received request to /product");
+        println!("Received request to /product");
 
     println!("getting products");
 

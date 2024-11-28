@@ -79,8 +79,6 @@ export default function SpanningTable({ taxRate,discount,products, setProducts }
     }
 
         const getProducts = async (record) =>{
-            console.log("adding to product",record);
-            console.log("price", record.unit);
             const row=addPrice(record.id, record.name, record.stock, record.unit)
             setProducts(products => ({
                 ...products,
