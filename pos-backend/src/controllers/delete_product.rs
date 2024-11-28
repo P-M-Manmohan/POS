@@ -1,12 +1,12 @@
 use actix_web::{delete, Responder, web, HttpResponse};
 use crate::models::product::Product;
-use crate::database::DbPool;
-use sqlx::query_as;
+//use crate::database::DbPool;
+use sqlx::{ query_as,PgPool };
 
 
 #[delete("/delete")]
 pub async fn delete_product(
-       db_pool: web::Data<DbPool>,
+       db_pool: web::Data<PgPool>,
        data:    web::Json<Product>
     ) -> impl Responder {
 

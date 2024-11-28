@@ -1,12 +1,12 @@
 use actix_web::{put, Responder, web, HttpResponse};
 use crate::models::product::Product;
-use crate::database::DbPool;
-use sqlx::query_as;
+//use crate::database::DbPool;
+use sqlx::{query_as, PgPool};
 
 
 #[put("/update")]
 pub async fn update_product(
-       db_pool: web::Data<DbPool>,
+       db_pool: web::Data<PgPool>,
        data:    web::Json<Product>
     ) -> impl Responder {
 

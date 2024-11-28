@@ -84,13 +84,6 @@ const UpdateModal = ({ setModal, data, mode, count, setCount}) => {
             if(result.status==200){
                 setModal(false);
                 setCount();
-            <TableRow key={product.name}>
-              <TableCell>{product.id}</TableCell>
-              <TableCell>{product.name}</TableCell>
-              <TableCell align="right">{product.stock}</TableCell>
-              <TableCell align="right">{product.unit}</TableCell>
-              <TableCell align="right">{ccyFormat(product.price)}</TableCell>
-            </TableRow>
             }
         } catch (err){
             console.error(err);
@@ -134,11 +127,11 @@ const UpdateModal = ({ setModal, data, mode, count, setCount}) => {
                         name='id' 
                         type='number' 
                         defaultValue={data.id}
-                         style={{
-                        appearance: "textfield", // Hide spinner in WebKit browsers
-                        MozAppearance: "textfield", // Hide spinner in Firefox
-                        WebkitAppearance: "none", // Another WebKit-specific rule
-                    }}></input>
+         style={{
+        appearance: "textfield", // Hide spinner in WebKit browsers
+        MozAppearance: "textfield", // Hide spinner in Firefox
+        WebkitAppearance: "none", // Another WebKit-specific rule
+      }}></input>
                 </div>
                 <div className='my-2 flex justify-between'>
                     <label htmlFor='name' className='me-4'>Name</label>

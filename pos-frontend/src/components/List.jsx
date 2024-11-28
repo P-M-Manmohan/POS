@@ -43,7 +43,9 @@ export default function CustomizedTables( {count, setCount}) {
     const getProducts = async () => {
     try{
         const result = await fetch('http://localhost:8080/product');
+        console.log("result",result)
         const json = await result.json();
+
 
         const rows = json.map(product => createData(product.id, product.name,product.stock,product.price));
 

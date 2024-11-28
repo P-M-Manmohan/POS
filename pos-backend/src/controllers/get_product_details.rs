@@ -1,12 +1,12 @@
 use actix_web::{get, Responder, web, HttpResponse};
 use crate::models::product::Product;
-use crate::database::DbPool;
-use sqlx::query_as;
+//use crate::database::DbPool;
+use sqlx::{query_as, PgPool};
 
 
 #[get("/product/{id}")]
 pub async fn get_product_details(
-       db_pool: web::Data<DbPool>,
+       db_pool: web::Data<PgPool>,
        product_id: web::Path<i32>,
     ) -> impl Responder {
     
