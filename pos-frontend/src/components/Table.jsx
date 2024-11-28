@@ -121,7 +121,7 @@ export default function SpanningTable({ taxRate,discount,products, setProducts }
         invoiceTotal =  invoiceTaxes + invoiceSubtotal;
     }
 
-    const checkout = () => {
+    const checkout = async () => {
         const details ={
             products,
             "discount": discount,
@@ -130,6 +130,29 @@ export default function SpanningTable({ taxRate,discount,products, setProducts }
             "subTotal": invoiceSubtotal,
             "total": invoiceTotal
         }
+
+        try {
+            const result = await fetch(`http://localhost:8080/invoice`,{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(details),
+            });
+            
+            if( result.status == 200 ){
+                setResult( await result.json());
+            }
+            else{
+                console.log("error");
+            }
+
+        }
+        catch (Err){
+             console.error(Err);
+        }
+
+
 
         console.log(details);
     }

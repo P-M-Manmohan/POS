@@ -7,10 +7,10 @@ use crate::controllers::add_product;
 use crate::controllers::update_product;
 use crate::controllers::delete_product;
 use crate::controllers::search;
+use crate::controllers::add_invoice;
 
 pub fn configure_routes(cfg: &mut web::ServiceConfig) {
 
-    println!("request recieved");
     cfg
         .service(hello::hello)
         .service(greet::greet)
@@ -20,6 +20,7 @@ pub fn configure_routes(cfg: &mut web::ServiceConfig) {
         .service(update_product::update_product)
         .service(delete_product::delete_product)
         .service(search::search_product_id)
-        .service(search::search_product_name);
+        .service(search::search_product_name)
+        .service(add_invoice::add_invoice);
 
 }

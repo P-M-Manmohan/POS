@@ -1,7 +1,7 @@
 use actix_web::{ App ,HttpServer, http,web, middleware::Logger};
 use actix_cors::Cors;
 use crate::database::{init_db_pool, DbPool};
-use crate::mongodb::init_mongodb;
+use crate::mdatabase::init_mongodb;
 use std::sync::Arc;
 use env_logger;
 
@@ -9,7 +9,7 @@ mod  routes;
 mod models;
 mod controllers;
 mod database;
-mod mongodb;
+mod mdatabase;
 
 
 #[actix_web::main]
@@ -33,8 +33,8 @@ async fn main() -> std::io::Result<()> {
             .allowed_headers(vec![http::header::CONTENT_TYPE])
             .max_age(3600),
             )
-        .app_data(web::Data::from(db_pool.clone()))
         .app_data(web::Data::from(mongo_client.clone()))
+        .app_data(web::Data::from(db_pool.clone()))
         .configure(routes::routes::configure_routes)
     })
     .bind(("127.0.0.1",port))?
