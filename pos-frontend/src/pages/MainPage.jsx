@@ -11,7 +11,6 @@ const MainPage = () => {
     const [products, setProducts] = useState(null);
     return (
     <>
-        {console.log( "main page",taxRate,discount)}
         <Navbar setTaxUpdate={setTaxUpdate} ></Navbar>
         <Table taxRate={taxRate} discount={discount} products={products} setProducts={setProducts} ></Table>
         { taxUpdate && <TaxUpdateModal taxRate={taxRate} setTaxRate={setTaxRate} discount={discount} setDiscount={setDiscount} setTaxUpdate={setTaxUpdate}/> }

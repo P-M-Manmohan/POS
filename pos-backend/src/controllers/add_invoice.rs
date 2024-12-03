@@ -1,21 +1,33 @@
-use actix_web::{post, Responder, web, HttpResponse};
-use mongodb::{ Client, bson::Document, bson::doc};
-use std::sync::Arc;
-//use serde_json::Value;
+use actix_web::{post, web::{Data, Json}, HttpResponse};
+
+use crate::{models::invoice::{Invoice, InvoiceRequest}, mdatabase::Mdatabase};
 
 #[post("/invoice")]
 pub async fn add_invoice(
-    client: web::Data<Arc<Client>>
-    ) -> impl Responder {
+    db: Data<Mdatabase>,
+    request: Json<InvoiceRequest>
+    ) -> HttpResponse {
 
     println!("invoice request recieved");
-    let collection = client.database("SeenaStores").collection("invoice");
 
-    let _ = collection.insert_one(doc! { "test_key2": "test_value2" }).await;
-    println!("Connected and data inserted successfully");
+    match db
+        .add_invoice(
+                Invoice::try_from(InvoiceRequest{
+                    date_time: request.date_time.clone(),
+                    items: request.items.clone(),
+                    sub_total: request.sub_total.clone(),
+                    total: request.total.clone(),
+                    tax_rate: request.tax_rate.clone(),
+                    tax: request.tax.clone(),
+                    discount: request.discount.clone(), 
+                })
+                .expect("Error converting InvoiceRequest to Invoice")
+            ).await{
+            Ok(invoice) => HttpResponse::Ok().json(invoice),
+            Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
+        }
     
 
-    HttpResponse::Ok().body("Invoice inserted")
     //let bson_doc: Document = match bson::to_document(&data.into_inner()) {
     //    Ok(doc) => doc,
     //    Err(err) => {
@@ -33,27 +45,3 @@ pub async fn add_invoice(
     //    }
     //}
 }
-
-
-//pub async fn get_all_products(
-//       db_pool: web::Data<DbPool>,
-//    ) -> impl Responder {
-//
-//        println!("Received request to /product");
-//
-//    println!("getting products");
-
- //   let product = query_as::<_,Product>("SELECT * FROM inventory")
-//        .fetch_all(&**db_pool)
-//        .await;
-//
-
-//    match product {
-//        Ok(product) => HttpResponse::Ok().json(product),
-//        Err(err) => {
-//            eprintln!("Database error: {err}");
-//            HttpResponse::InternalServerError().body("Internal server error")
-//        }
-
-//    }
-//}

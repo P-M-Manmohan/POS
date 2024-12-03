@@ -1,4 +1,5 @@
 import { useState , useEffect} from "react";
+import  { renderToString } from "react-dom/server";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -8,7 +9,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import EditableField from './EditableField.jsx';
 import rupee from '../assets/images/rupee.png';
-
+import Invoice from './invoice.jsx';
 
 function ccyFormat(num) {
   return `${num.toFixed(2)}`;
@@ -42,7 +43,9 @@ export default function SpanningTable({ taxRate,discount,products, setProducts }
     const[id, setId] = useState(null);
     const[name, setName] = useState(null);
     const [result, setResult] = useState(null);
+    const [details, setDetails] = useState(null);
     const [length, setLength] = useState(null);
+    const [invoice, setInvoice] =useState(false);
 
     const searchid = async () => {
         try {
@@ -92,9 +95,6 @@ export default function SpanningTable({ taxRate,discount,products, setProducts }
         setSelect(createRow(field.id,field.name,field.stock,field.price));
     }
 
-   // useEffect(() => {
-   //     getProducts();
-   // },[]);
 
     useEffect(() => {
         if (id != null && id != "")
@@ -121,15 +121,60 @@ export default function SpanningTable({ taxRate,discount,products, setProducts }
         invoiceTotal =  invoiceTaxes + invoiceSubtotal;
     }
 
+    const renameFields = (items) => {
+  return Object.fromEntries(
+    Object.entries(items).map(([key, value]) => {
+      const { unit, stock, name, id, price } = value;
+      return [
+        key,
+        { price: price, name: name, id: id, unit_price: unit, quantity: stock }, // Rename fields
+      ];
+    })
+  );
+};
+
+const makeNull = () => {
+    
+    setSelect(null);
+    setVisible(false);
+    setId(null);
+    setName(null);
+    setResult(null);
+    setDetails(null);
+    setProducts(null);
+    setLength(null);
+    setInvoice(false);
+     
+
+}
+useEffect(() => {
+  const ipcRenderer = window.electronAPI?.ipcRenderer;
+  if (ipcRenderer) {
+    ipcRenderer.on('some-event', (data) => {
+      console.log('Data received:', data);
+    });
+  }else{
+    console.log("not loading");
+  }
+}, []);
+
+    const printInvoice = () => {
+        const htmlContent = renderToString(<Invoice data={details}/>);
+
+        window.electronAPI.ipcRenderer.send('print-invoice',htmlContent);
+    };
+
     const checkout = async () => {
-        const details ={
-            products,
+
+        const data={
+            "date_time" : new Date().toISOString(),
+            "items" : Object.values(renameFields(products)),
             "discount": discount,
-            "taxRate" : taxRate,
+            "tax_rate" : taxRate,
             "tax": invoiceTaxes,
-            "subTotal": invoiceSubtotal,
+            "sub_total": invoiceSubtotal,
             "total": invoiceTotal
-        }
+        };
 
         try {
             const result = await fetch(`http://localhost:8080/invoice`,{
@@ -137,25 +182,31 @@ export default function SpanningTable({ taxRate,discount,products, setProducts }
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify(details),
+                body: JSON.stringify(data),
             });
             
             if( result.status == 200 ){
-                setResult( await result.json());
+                console.log("success")
+                makeNull();
+                setDetails(data);
+                setInvoice(true);
             }
             else{
-                console.log("error");
+                console.log("erro");
             }
 
         }
         catch (Err){
              console.error(Err);
         }
+}
 
-
-
-        console.log(details);
+    useEffect(()=>{
+        if (invoice){
+        printInvoice();
+        setInvoice(false);}
     }
+    ,[invoice]);
 
 
   return (
@@ -248,8 +299,9 @@ export default function SpanningTable({ taxRate,discount,products, setProducts }
       />
       <span className="hidden md:block text-m font-bold "
       >Ceckout</span>
-
+        
       </div>
+      { invoice && <Invoice data={details}/> }
       </>
   );
 }

@@ -1,7 +1,7 @@
 use actix_web::{ App ,HttpServer, http,web, middleware::Logger};
 use actix_cors::Cors;
 use crate::database::{init_db_pool, DbPool};
-use crate::mdatabase::init_mongodb;
+use crate::mdatabase::Mdatabase;
 use std::sync::Arc;
 use env_logger;
 
@@ -21,8 +21,12 @@ async fn main() -> std::io::Result<()> {
     let db_pool: DbPool = init_db_pool().await;
     let db_pool = Arc::new(db_pool);
 
-    let mongo_client = init_mongodb().await;
-    let mongo_client = Arc::new(mongo_client);
+
+    let db = Mdatabase::init().await;
+    let db_data = web::Data::new(db);
+
+//    let mongo_client = init_mongodb().await;
+//    let mongo_client = Arc::new(mongo_client);
 
     HttpServer::new(move || {
         App::new()
@@ -33,7 +37,7 @@ async fn main() -> std::io::Result<()> {
             .allowed_headers(vec![http::header::CONTENT_TYPE])
             .max_age(3600),
             )
-        .app_data(web::Data::from(mongo_client.clone()))
+        .app_data(db_data.clone())
         .app_data(web::Data::from(db_pool.clone()))
         .configure(routes::routes::configure_routes)
     })
