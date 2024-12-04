@@ -8,8 +8,6 @@ pub async fn add_invoice(
     request: Json<InvoiceRequest>
     ) -> HttpResponse {
 
-    println!("invoice request recieved");
-
     match db
         .add_invoice(
                 Invoice::try_from(InvoiceRequest{
@@ -26,22 +24,4 @@ pub async fn add_invoice(
             Ok(invoice) => HttpResponse::Ok().json(invoice),
             Err(err) => HttpResponse::InternalServerError().body(err.to_string()),
         }
-    
-
-    //let bson_doc: Document = match bson::to_document(&data.into_inner()) {
-    //    Ok(doc) => doc,
-    //    Err(err) => {
-    //        eprintln!("Failed to convert JSON to BSON: {:?}", err);
-    //        return HttpResponse::BadRequest().body("Invalid data format")
-    //    }
-    //};
-
-    // Insert the document into the collection
-    //match collection.insert_one(bson_doc).await {
-    //    Ok(_) => HttpResponse::Ok().body("Invoice inserted successfully"),
-    //    Err(err) => {
-    //        eprintln!("Failed to insert invoice: {:?}", err);
-    //        HttpResponse::InternalServerError().body("Failed to insert invoice")
-    //    }
-    //}
 }

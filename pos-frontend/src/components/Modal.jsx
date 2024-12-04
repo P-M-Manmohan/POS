@@ -3,13 +3,13 @@ import close from '../assets/images/close.png';
 import UpdateModal from './UpdateModal.jsx';
 import { useState } from 'react';
 
-const Modal = () => {
+const Modal = ({update, setUpdate}) => {
 
     const [showModal,setShowModal] = useState(false);
     const [count, setCount] = useState(0);
 
     const handleUpdate = () => {
-        setCount(count+1);
+        setUpdate(true);
     }
 
     
@@ -26,7 +26,7 @@ const Modal = () => {
                             </button>
                         </form>
                     </div>
-                    <List count={count} setCount={handleUpdate} />
+                    <List count={count} setCount={handleUpdate} update={update} setUpdate={setUpdate} />
                 </div>
                 <div className='flex justify-end'>
                     <button className="rounded-md m-2 bg-green-600 px-2 py-0.5" onClick={ () => { setShowModal(true) } }>Add</button>

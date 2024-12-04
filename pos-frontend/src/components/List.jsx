@@ -34,7 +34,7 @@ function createData(id, name , stock , price) {
 }
 
 
-export default function CustomizedTables( {count, setCount}) {
+export default function CustomizedTables( {count, setCount, update, setUpdate}) {
     
     const [modal, setModal] = useState(false);
     const [data, setData] = useState(null);
@@ -57,9 +57,13 @@ export default function CustomizedTables( {count, setCount}) {
     }
     }
 
-    useEffect( () => {
-     getProducts();
-    },[count] )
+    useEffect( () =>{
+    if(update || products == null){
+        getProducts();
+        setUpdate(false);
+    }},[update] )
+    
+
     
   return (
     <> 
@@ -78,12 +82,12 @@ export default function CustomizedTables( {count, setCount}) {
             <StyledTableRow key={row.id}>
               <StyledTableCell component="th" scope="row" >
               <button id={row.id} className='justify-self-center h-max' onClick={ () => { setModal(true); setData(row)} }>
-                { row.id }
+                <div className={`${row.stock<5 ? "text-red-500 font-bold" : ""}`}>{row.id}</div>
               </button>
               </StyledTableCell>
-              <StyledTableCell align="left">{row.name}</StyledTableCell>
-              <StyledTableCell align="left">{row.stock}</StyledTableCell>
-              <StyledTableCell align="left">{row.price}</StyledTableCell>
+              <StyledTableCell align="left"><div className={`${row.stock<5 ? "text-red-500 font-bold" : ""}`}>{row.name}</div></StyledTableCell>
+              <StyledTableCell align="left"><div className={`${row.stock<5 ? "text-red-500 font-bold" : ""}`}>{row.stock}</div></StyledTableCell>
+              <StyledTableCell align="left"><div className={`${row.stock<5 ? "text-red-500 font-bold" : ""}`}>{row.price}</div></StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>

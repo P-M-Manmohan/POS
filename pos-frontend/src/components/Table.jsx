@@ -36,7 +36,7 @@ function subtotal(items) {
 
 
 
-export default function SpanningTable({ taxRate,discount,products, setProducts } ) {
+export default function SpanningTable({ taxRate,discount,products, setProducts, setUpdate } ) {
     
     const[select, setSelect] = useState(null);
     const [visible, setVisible] = useState(false);
@@ -147,22 +147,30 @@ const makeNull = () => {
      
 
 }
-useEffect(() => {
-  const ipcRenderer = window.electronAPI?.ipcRenderer;
-  if (ipcRenderer) {
-    ipcRenderer.on('some-event', (data) => {
-      console.log('Data received:', data);
-    });
-  }else{
-    console.log("not loading");
-  }
-}, []);
 
-    const printInvoice = () => {
-        const htmlContent = renderToString(<Invoice data={details}/>);
 
-        window.electronAPI.ipcRenderer.send('print-invoice',htmlContent);
-    };
+    const updateStock = async () => {
+        try{
+
+            console.log(Object.values(products));
+            const result = await fetch(`http://localhost:8080/update`,{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(Object.values(products)),
+            });
+
+            if (result.status ==200){
+                console.log("stock updated");
+                setUpdate(true);
+            }
+
+
+        }catch (Err){
+            console.log(Err)
+        }    
+    }
 
     const checkout = async () => {
 
@@ -190,6 +198,7 @@ useEffect(() => {
                 makeNull();
                 setDetails(data);
                 setInvoice(true);
+                updateStock();
             }
             else{
                 console.log("erro");
@@ -203,7 +212,7 @@ useEffect(() => {
 
     useEffect(()=>{
         if (invoice){
-        printInvoice();
+ //       printInvoice();
         setInvoice(false);}
     }
     ,[invoice]);
@@ -253,7 +262,7 @@ useEffect(() => {
             <TableRow key='input' className="bg-blue-100">
               <TableCell><EditableField type={'number'} fieldName="id" setVisible={setVisible} setInput={setId} product={result} setLength={ setLength } length = { length } addToList={ addToList } className="max-w-5"/></TableCell>
               <TableCell><EditableField type={"text"} fieldName="name" setVisible={setVisible} setInput={setName} product={result} setLength={ setLength } length = { length } addToList={ addToList } /></TableCell>
-              <TableCell align="right">{ /*<EditableField type={'number'} fieldName="qty" setVisible={setVisible} setInput={setName} stock={null}/>*/}</TableCell>
+              <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
               <TableCell align="right"></TableCell>
             </TableRow>

@@ -1,4 +1,5 @@
-use mongodb::{error::Error, results::InsertOneResult, Client, Collection};
+use mongodb::{error::Error, results::InsertOneResult, bson::{doc, Bson}, Client, Collection};
+use futures::stream::StreamExt;
 use std::env;
 use crate::models::invoice::Invoice ;
 
@@ -35,33 +36,35 @@ impl Mdatabase{
 
         Ok(result)
     }
+
+    pub async fn get_sales(&self) -> Result<i64, Error>{
+    
+        let mut cursor = self
+            .invoice
+            .aggregate(vec![
+                doc!{
+                    "$group": {
+                        "_id": null,
+                        "sumTotal": {
+                            "$sum": "$total"
+                        }
+                    }
+                }
+            ])
+            .await
+            .ok()
+            .expect("Error fetching sales Data");
+
+        while let Some(result) = cursor.next().await {
+                if let Ok(doc) = result {
+
+                   if let Some(Bson::Int64(sum_total)) = doc.get("sumTotal") {
+                        return Ok(*sum_total);
+                    }
+                }
+            }
+
+        Ok(0)
+
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//use mongodb::{ options::ClientOptions, Client};
-
-//use std::{env, sync::Arc };
-
-//pub async fn init_mongodb() -> mongodb::error::Result<Arc<Client>> {
-//    dotenv::dotenv().ok();
-//    let client_uri = env::var("MONGO_URI").expect("Mongo uri must be in environment variables");
-//    let options = ClientOptions::parse(&client_uri).await?;
-//    let client = Client::with_options(options)?;
-
-//   Ok(Arc::new(client))
-//}

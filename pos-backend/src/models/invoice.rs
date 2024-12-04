@@ -7,7 +7,7 @@ use std::time::SystemTime;
 pub struct Item{
     pub id: u32,
     pub name: String,
-    pub quantity: String,
+    pub quantity: u32,
     pub unit_price: String,
     pub price: u32,
 

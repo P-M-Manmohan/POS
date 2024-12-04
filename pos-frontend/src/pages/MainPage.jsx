@@ -9,12 +9,13 @@ const MainPage = () => {
     const [discount, setDiscount] = useState(0);
     const [taxUpdate,setTaxUpdate] = useState(false);
     const [products, setProducts] = useState(null);
+    const [update, setUpdate] = useState(false);
     return (
     <>
-        <Navbar setTaxUpdate={setTaxUpdate} ></Navbar>
-        <Table taxRate={taxRate} discount={discount} products={products} setProducts={setProducts} ></Table>
+        <Navbar setTaxUpdate={setTaxUpdate} update={update}></Navbar>
+        <Table taxRate={taxRate} discount={discount} products={products} setProducts={setProducts} setUpdate={setUpdate} ></Table>
         { taxUpdate && <TaxUpdateModal taxRate={taxRate} setTaxRate={setTaxRate} discount={discount} setDiscount={setDiscount} setTaxUpdate={setTaxUpdate}/> }
-        <Modal></Modal>
+        <Modal update={update} setUpdate={setUpdate}></Modal>
     </>
     )
 }   

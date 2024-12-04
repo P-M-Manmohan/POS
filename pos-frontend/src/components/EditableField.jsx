@@ -3,7 +3,7 @@ import "../index.css";
 
 
 const EditableField = ( { type, fieldName, setVisible, setInput, product, setProducts, setLength, length, addToList }) => {
-    const [value, setValue] = useState("Enter");
+    const [value, setValue] = useState("");
     const [tempValue, setTempValue] = useState(value); // Temorary value during editing
     const [isEditing, setIsEditing] = useState(false);
 
@@ -22,7 +22,8 @@ const EditableField = ( { type, fieldName, setVisible, setInput, product, setPro
    }
     if ( tempValue <= product.stock ){
         var field = product;
-        field.stock = tempValue;
+        
+        field.stock = Number(tempValue);
         setProducts(field);
         setVisible(false);
     }else {

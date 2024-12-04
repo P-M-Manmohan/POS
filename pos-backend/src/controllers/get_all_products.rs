@@ -10,7 +10,7 @@ pub async fn get_all_products(
     ) -> impl Responder {
 
 
-    let product = query_as::<_,Product>("SELECT * FROM inventory")
+    let product = query_as::<_,Product>("SELECT * FROM inventory ORDER BY id")
         .fetch_all(&**db_pool)
         .await;
 

@@ -7,3 +7,5 @@ pub mod update_product;
 pub mod delete_product;
 pub mod search;
 pub mod add_invoice;
+pub mod update_stock;
+pub mod check_sales;

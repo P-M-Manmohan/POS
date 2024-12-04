@@ -1,42 +1,33 @@
-import { useRef } from 'react';
-import { useReactToPrint } from "react-to-print";
 import add from '../assets/images/plus.png';
-import rupee from '../assets/images/rupee.png';
 import box from '../assets/images/box.png';
 import percentage from '../assets/images/percentage.png';
 import { NavLink } from 'react-router-dom';
 import ColorTabs from './Tabs.jsx';
+import {useState, useEffect} from 'react';
 
-const Navbar = ({setTaxUpdate}) => {
+const Navbar = ({setTaxUpdate,update}) => {
  
 
-function PrintableContent({ data }) {
-  return (
-    <div>
-      <h1>Invoice</h1>
-      <p>Name: {data.name}</p>
-      <p>Amount: ${data.amount}</p>
-    </div>
-  );
-}
+    const [sales,setSales] = useState(null);
 
-   // const print = () => {
-// const printRef = useRef();
- // const handlePrint = useReactToPrint({
-  //  content: () => printRef.current,
- // });
 
-  //const data = { name: "John Doe", amount: "123.45" };
- 
-  //return (
-    //<div>
-     // <div ref={printRef}>
-      //  <PrintableContent data={data} />
-      //</div>
-      //<button onClick={handlePrint}>Print</button>
-    //</div>
- // );
-//}
+    const checkSales = async () => {
+        
+        try{
+            const result = await fetch(`http://localhost:8080/sales`,{
+              method:"GET",
+            });
+
+            setSales(await result.json());
+
+        }catch(Err){
+            console.log(Err);
+        }
+    }
+
+    useEffect( () => {
+        checkSales();
+    },[update] );
 
 
   const linkClass=({isActive})=>
@@ -96,9 +87,12 @@ function PrintableContent({ data }) {
         
 
       </div>
-      <div className='flex flex-1 items-center mr-2'>
-
+      <div className='flex flex-1 items-center mr-2' onClick={() => checkSales() }>      
+      <div className="flex w-fit h-full text-xl font-serif items-center content-center rounded bg-blue-100 p-3">
+            Sales: {sales}
       </div>
+      </div>
+
 
             <div className=" flex justify-items-center items-center content-center md:ml-auto">
               <div className=" h-6 space-x-2">
