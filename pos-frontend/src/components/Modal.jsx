@@ -9,6 +9,7 @@ const Modal = ({update, setUpdate}) => {
     const [count, setCount] = useState(0);
 
     const handleUpdate = () => {
+        console.log("handle update");
         setUpdate(true);
     }
 

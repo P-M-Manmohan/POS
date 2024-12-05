@@ -29,8 +29,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   },
 }));
 
-function createData(id, name , stock , price) {
-  return { id, name, stock , price };
+function createData(id, name , stock ,cost, price) {
+  return { id, name, stock ,cost, price };
 }
 
 
@@ -44,13 +44,11 @@ export default function CustomizedTables( {count, setCount, update, setUpdate}) 
     try{
         const result = await fetch('http://localhost:8080/product');
         const json = await result.json();
+    
+        console.log("products",json);
 
+        const rows = json.map(product => createData(product.id, product.name,product.stock,product.cost,product.price));
 
-        const rows = json.map(product => createData(product.id, product.name,product.stock,product.price));
-
-        if (count == 0){
-            setCount(rows.length);
-        }
         setProducts(rows);
     }catch(Err){
         console.log(Err);
@@ -58,6 +56,7 @@ export default function CustomizedTables( {count, setCount, update, setUpdate}) 
     }
 
     useEffect( () =>{
+        console.log(update);
     if(update || products == null){
         getProducts();
         setUpdate(false);

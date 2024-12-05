@@ -4,6 +4,7 @@ use crate::database::{init_db_pool, DbPool};
 use crate::mdatabase::Mdatabase;
 use std::sync::Arc;
 use env_logger;
+use sqlx;
 
 mod  routes;
 mod models;
@@ -19,14 +20,13 @@ async fn main() -> std::io::Result<()> {
     println!("starting server on {port}");
 
     let db_pool: DbPool = init_db_pool().await;
+    let _ = sqlx::migrate!("./migrations").run(&db_pool).await;
     let db_pool = Arc::new(db_pool);
-
+        
 
     let db = Mdatabase::init().await;
     let db_data = web::Data::new(db);
 
-//    let mongo_client = init_mongodb().await;
-//    let mongo_client = Arc::new(mongo_client);
 
     HttpServer::new(move || {
         App::new()

@@ -26,7 +26,9 @@ const Navbar = ({setTaxUpdate,update}) => {
     }
 
     useEffect( () => {
+        if (update ){
         checkSales();
+        }
     },[update] );
 
 

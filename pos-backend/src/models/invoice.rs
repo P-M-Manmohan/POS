@@ -9,6 +9,7 @@ pub struct Item{
     pub name: String,
     pub quantity: u32,
     pub unit_price: String,
+    pub cost: String,
     pub price: u32,
 
 }

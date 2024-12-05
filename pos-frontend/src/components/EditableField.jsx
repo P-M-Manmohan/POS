@@ -16,6 +16,7 @@ const EditableField = ( { type, fieldName, setVisible, setInput, product, setPro
 
   const handleSave = () => {
     if (fieldName != "qty"){
+        console.log("select",product);
         addToList(product[length]);
     setValue(tempValue); // Save the temporary value
         return;

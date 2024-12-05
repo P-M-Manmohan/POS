@@ -42,8 +42,6 @@ const UpdateModal = ({ setModal, data, mode, count, setCount}) => {
             });
             if(result.status==200){
                 setModal(false);
-                console.log(setCount);
-                setCount();
             }
         } catch (err){
             console.error(err);
@@ -97,6 +95,7 @@ const UpdateModal = ({ setModal, data, mode, count, setCount}) => {
             id:"",
             name:"",
             stock:"",
+            cost:"",
             price:""
         };
     }
@@ -133,14 +132,23 @@ const UpdateModal = ({ setModal, data, mode, count, setCount}) => {
         WebkitAppearance: "none", // Another WebKit-specific rule
       }}></input>
                 </div>
+
                 <div className='my-2 flex justify-between'>
                     <label htmlFor='name' className='me-4'>Name</label>
                     <input className='outline rounded outline-2 outline-gray-500 outline-offset-2' onChange={handleChange} name='name' defaultValue={data.name}></input>
                 </div>
+          
+
                 <div className='my-2 flex justify-between'>
                     <label htmlFor='stock' className='me-4'>Stock</label>
                     <input onKeyDown={handleKeyDown} id='stock' className='outline rounded outline-2 outline-gray-500 outline-offset-2' onChange={handleChange} name='stock' type='number' defaultValue={data.stock}></input>
                 </div>
+                
+                <div className='my-2 flex justify-between'>
+                    <label htmlFor='cost' className='me-4'>Cost price</label>
+                    <input onKeyDown={handleKeyDown} id='cost' className='outline rounded outline-2 outline-gray-500 outline-offset-2' onChange={handleChange} name='cost' defaultValue={data.cost}></input>
+                </div>
+
                 <div className='my-2 flex justify-between'>
                     <label htmlFor='price' className='me-4'>Price</label>
                     <input onKeyDown={handleKeyDown} id='price' className='outline rounded outline-2 outline-gray-500 outline-offset-2' onChange={handleChange} name='price' defaultValue={data.price}></input>

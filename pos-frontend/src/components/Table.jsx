@@ -19,15 +19,15 @@ function priceRow(qty, unit) {
   return qty * unit;
 }
 
-const addPrice = (id,name, stock, unit) => {
+const addPrice = (id,name, stock,cost, unit) => {
     const price = priceRow(stock, parseInt(unit,10));
-    return {id, name, stock, unit, price};
+    return {id, name, stock, unit,cost, price};
 }
 
-function createRow(id, name, stock, unit) {
+function createRow(id, name, stock,cost, unit) {
   //const price = priceRow(stock, parseInt(unit,10));
   //return { id, name, stock, unit, price };
-  return { id, name, stock, unit };
+  return { id, name, stock,cost, unit };
 }
 
 function subtotal(items) {
@@ -52,10 +52,12 @@ export default function SpanningTable({ taxRate,discount,products, setProducts, 
             const result = await fetch(`http://localhost:8080/searchid/${id}`,{
                 method : "POST",
             });
+            console.log("result",await result.json);
             
             if( result.status ==200 ){
                 setResult( await result.json());
             }
+
         }
         catch (Err){
                 console.error(Err);
@@ -82,7 +84,8 @@ export default function SpanningTable({ taxRate,discount,products, setProducts, 
     }
 
         const getProducts = async (record) =>{
-            const row=addPrice(record.id, record.name, record.stock, record.unit)
+            console.log("getProducts",record);
+            const row=addPrice(record.id, record.name, record.stock,record.cost, record.unit)
             setProducts(products => ({
                 ...products,
                 [row.id] : row
@@ -92,7 +95,7 @@ export default function SpanningTable({ taxRate,discount,products, setProducts, 
     // Log the updated products after state change and re-render
     //
     const addToList = (field) => {
-        setSelect(createRow(field.id,field.name,field.stock,field.price));
+        setSelect(createRow(field.id,field.name,field.stock,field.cost,field.price));
     }
 
 
@@ -124,10 +127,10 @@ export default function SpanningTable({ taxRate,discount,products, setProducts, 
     const renameFields = (items) => {
   return Object.fromEntries(
     Object.entries(items).map(([key, value]) => {
-      const { unit, stock, name, id, price } = value;
+      const { unit, stock, name, id,cost, price } = value;
       return [
         key,
-        { price: price, name: name, id: id, unit_price: unit, quantity: stock }, // Rename fields
+        { price: price, name: name, id: id, unit_price: unit,cost:cost, quantity: stock }, // Rename fields
       ];
     })
   );
