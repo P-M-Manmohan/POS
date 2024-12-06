@@ -10,6 +10,8 @@ use crate::controllers::search;
 use crate::controllers::add_invoice;
 use crate::controllers::update_stock;
 use crate::controllers::check_sales;
+use crate::controllers::check_cost;
+use crate::controllers::day_end;
 
 pub fn configure_routes(cfg: &mut web::ServiceConfig) {
 
@@ -25,6 +27,8 @@ pub fn configure_routes(cfg: &mut web::ServiceConfig) {
         .service(search::search_product_name)
         .service(add_invoice::add_invoice)
         .service(update_stock::update_stock)
-        .service(check_sales::check_sales);
+        .service(check_sales::check_sales)
+        .service(check_cost::check_cost)
+        .service(day_end::day_end);
 
 }

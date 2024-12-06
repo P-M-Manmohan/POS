@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import ColorTabs from './Tabs.jsx';
 import {useState, useEffect} from 'react';
 
-const Navbar = ({setTaxUpdate,update}) => {
+const Navbar = ({setTaxUpdate,update,setDayStart}) => {
  
 
     const [sales,setSales] = useState(null);
@@ -22,6 +22,25 @@ const Navbar = ({setTaxUpdate,update}) => {
 
         }catch(Err){
             console.log(Err);
+        }
+    }
+
+    const dayEnd = async () =>{
+
+        try{
+            const cost = await fetch(`http://localhost:8080/cost`,{
+                method: "GET",
+            });
+            const sales= await fetch(`http://localhost:8080/sales`,{
+                method: "GET",
+            });
+
+            const profits = (await sales.json()) - (await cost.json()); 
+
+            console.log(profits);
+            setDayStart(false);
+        }catch (Err){
+            console.log("Error fetching profits", Err);
         }
     }
 
@@ -97,13 +116,10 @@ const Navbar = ({setTaxUpdate,update}) => {
 
 
             <div className=" flex justify-items-center items-center content-center md:ml-auto">
-              <div className=" h-6 space-x-2">
+              <div className=" h-6 space-x-2" onClick={dayEnd}>
                 <NavLink to="/" className={linkClass}>
                   Day End
-                </NavLink>
-                <NavLink to="/jobs" className={linkClass}>
-                
-                </NavLink>
+                </NavLink> 
               </div>
             </div>
           </div>

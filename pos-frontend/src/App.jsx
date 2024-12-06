@@ -1,27 +1,15 @@
-import { Route,createBrowserRouter,createRoutesFromElements,RouterProvider } from 'react-router-dom'
-import MainPage from "./pages/MainPage"
-import React from 'react'
-
+import { Route,createBrowserRouter,createRoutesFromElements,RouterProvider } from 'react-router-dom';
+import MainPage from "./pages/MainPage";
+import Login from "./pages/login";
+import { useState } from 'react';
 
 const App = () => {
-
-  //Add new Job
-  const addProduct= async (newJob)=>{
-    const res= await fetch('/api/products',{
-      method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-      },
-      body:JSON.stringify(newJob)
-    });
-    return;
-  } 
-
-
+    
+    const [ dayStart,setDayStart ] = useState(false);
 
   const router=createBrowserRouter(
     createRoutesFromElements(
-    <Route path='/' element={ <MainPage /> }>
+    <Route path='/' element={ dayStart ? <MainPage setDayStart={ setDayStart } /> : <Login setDayStart={setDayStart}/>}>
     </Route>)
   )
 

@@ -24,6 +24,7 @@ pub struct Invoice{
     pub total: u32,
     pub tax_rate: u8,
     pub tax: u32,
+    pub total_cost: u32,
     pub discount: u32,
 }
 
@@ -35,6 +36,7 @@ pub struct InvoiceRequest{
     pub total: u32,
     pub tax_rate: u8,
     pub tax: u32,
+    pub total_cost: u32,
     pub discount: u32,
 }
 
@@ -55,6 +57,7 @@ impl TryFrom<InvoiceRequest> for Invoice {
             total: item.total,
             tax_rate: item.tax_rate,
             tax: item.tax,
+            total_cost: item.total_cost,
             discount: item.discount,
         })
     }

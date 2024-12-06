@@ -10,7 +10,6 @@ pub async fn update_stock(
        data:    web::Json<Vec<Product>>
     ) -> impl Responder {
 
-        println!("stock changing");
 
     match query(&db_pool,&data).await{
         Ok(status) => HttpResponse::Ok().json(status),
@@ -30,7 +29,6 @@ async fn query(
         let mut query: String = String::from("UPDATE inventory SET stock = CASE ");
         let mut ids = Vec::new();
 
-        println!("{:?}",items);
 
         for item in items {
             query.push_str(&format!("WHEN id = {} THEN stock-{} ",item.id,item.stock));
@@ -41,7 +39,6 @@ async fn query(
         query.push_str(&ids.join(", "));
         query.push_str(")");
 
-        println!("{}",query);
 
         sqlx::query(&query).execute(pool).await?;
         Ok(())

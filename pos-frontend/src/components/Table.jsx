@@ -155,7 +155,6 @@ const makeNull = () => {
     const updateStock = async () => {
         try{
 
-            console.log(Object.values(products));
             const result = await fetch(`http://localhost:8080/update`,{
                 method: "POST",
                 headers: {
@@ -165,7 +164,6 @@ const makeNull = () => {
             });
 
             if (result.status ==200){
-                console.log("stock updated");
                 setUpdate(true);
             }
 
@@ -180,6 +178,10 @@ const makeNull = () => {
         const offsetMinutes = now.getTimezoneOffset(); // Difference from UTC in minutes
         const localTime = new Date(now.getTime() - offsetMinutes * 60000);
         const dateTime =  localTime.toISOString();
+        let totalCost=0;
+        Object.values(products).forEach(item => {
+                totalCost+=(parseInt(item.cost,10)* item.stock);
+        })
 
         const data={
             "date_time" :dateTime,
@@ -188,6 +190,7 @@ const makeNull = () => {
             "tax_rate" : taxRate,
             "tax": invoiceTaxes,
             "sub_total": invoiceSubtotal,
+            "total_cost": totalCost,
             "total": invoiceTotal
         };
 

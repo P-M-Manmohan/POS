@@ -19,7 +19,6 @@ pub async fn update_product(
         .await;
 
 
-    println!("{:?}",response);
     match response{
         Ok(status) => HttpResponse::Ok().json(status),
         Err(err) => {

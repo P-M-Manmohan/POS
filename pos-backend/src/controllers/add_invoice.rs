@@ -15,6 +15,7 @@ pub async fn add_invoice(
                     items: request.items.clone(),
                     sub_total: request.sub_total.clone(),
                     total: request.total.clone(),
+                    total_cost: request.total_cost.clone(),
                     tax_rate: request.tax_rate.clone(),
                     tax: request.tax.clone(),
                     discount: request.discount.clone(), 

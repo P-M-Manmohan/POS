@@ -43,8 +43,8 @@ impl Mdatabase{
         let start = Local::now().date_naive().and_hms_opt(0,0,0).unwrap();
         let end = Local::now().date_naive().and_hms_opt(23,59,59).unwrap();
 
-        let start = BsonDateTime::from_millis(Local.from_local_datetime(&start).unwrap().timestamp_millis());
-        let end = BsonDateTime::from_millis(Local.from_local_datetime(&end).unwrap().timestamp_millis());
+        let start = BsonDateTime::from_millis(start.timestamp_millis());
+        let end = BsonDateTime::from_millis(end.timestamp_millis());
 
         let mut cursor = self
             .invoice
@@ -58,7 +58,7 @@ impl Mdatabase{
                          }
                 },
                 doc!{
-                    "$group": {
+                    "$group": { 
                         "_id": null,
                         "sumTotal": {
                             "$sum": "$total"
@@ -82,4 +82,52 @@ impl Mdatabase{
         Ok(0)
 
     }
+
+    pub async fn get_cost(&self) -> Result<i64, Error>{
+
+        let start = Local::now().date_naive().and_hms_opt(0,0,0).unwrap();
+        let end = Local::now().date_naive().and_hms_opt(23,59,59).unwrap();
+
+        let start = BsonDateTime::from_millis(start.timestamp_millis());
+        let end = BsonDateTime::from_millis(end.timestamp_millis());
+
+        let mut cursor = self
+            .invoice
+            .aggregate(vec![
+                    doc! {
+                        "$match": {
+                            "date_time": {
+                                "$gte": start,
+                                "$lte": end
+                            }
+                         }
+                },
+                doc!{
+                    "$group": { 
+                        "_id": null,
+                        "totalCost": {
+                            "$sum": "$total_cost"
+                        }
+                    }
+                }
+            ])
+            .await
+            .ok()
+            .expect("Error fetching sales Data");
+
+        while let Some(result) = cursor.next().await {
+                if let Ok(doc) = result {
+
+                   if let Some(Bson::Int64(total_cost)) = doc.get("totalCost") {
+                        return Ok(*total_cost);
+                    }
+                }
+            }
+
+        Ok(0)
+
+
+    }
+
+
 }
