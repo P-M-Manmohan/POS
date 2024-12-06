@@ -1,7 +1,8 @@
-use mongodb::{error::Error, results::InsertOneResult, bson::{doc, Bson}, Client, Collection};
+use mongodb::{error::Error, results::InsertOneResult, bson::{doc, Bson, DateTime as BsonDateTime}, Client, Collection};
 use futures::stream::StreamExt;
 use std::env;
 use crate::models::invoice::Invoice ;
+use chrono::{TimeZone ,Local};
 
 
 
@@ -38,10 +39,24 @@ impl Mdatabase{
     }
 
     pub async fn get_sales(&self) -> Result<i64, Error>{
-    
+        
+        let start = Local::now().date_naive().and_hms_opt(0,0,0).unwrap();
+        let end = Local::now().date_naive().and_hms_opt(23,59,59).unwrap();
+
+        let start = BsonDateTime::from_millis(Local.from_local_datetime(&start).unwrap().timestamp_millis());
+        let end = BsonDateTime::from_millis(Local.from_local_datetime(&end).unwrap().timestamp_millis());
+
         let mut cursor = self
             .invoice
             .aggregate(vec![
+                    doc! {
+                        "$match": {
+                            "date_time": {
+                                "$gte": start,
+                                "$lte": end
+                            }
+                         }
+                },
                 doc!{
                     "$group": {
                         "_id": null,

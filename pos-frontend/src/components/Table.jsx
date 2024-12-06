@@ -176,9 +176,13 @@ const makeNull = () => {
     }
 
     const checkout = async () => {
+        const now = new Date();
+        const offsetMinutes = now.getTimezoneOffset(); // Difference from UTC in minutes
+        const localTime = new Date(now.getTime() - offsetMinutes * 60000);
+        const dateTime =  localTime.toISOString();
 
         const data={
-            "date_time" : new Date().toISOString(),
+            "date_time" :dateTime,
             "items" : Object.values(renameFields(products)),
             "discount": discount,
             "tax_rate" : taxRate,
