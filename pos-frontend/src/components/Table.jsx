@@ -98,6 +98,14 @@ export default function SpanningTable({ taxRate,discount,products, setProducts, 
         setSelect(createRow(field.id,field.name,field.stock,field.cost,field.price));
     }
 
+    const removeFromList = (product) => {
+        const newProducts = Object.fromEntries(
+                    Object.entries(products).filter(([key,val]) => val!= product)
+        );
+        setProducts(newProducts);
+
+    }
+
 
     useEffect(() => {
         if (id != null && id != "")
@@ -279,7 +287,7 @@ const makeNull = () => {
       }
           {products && Object.values(products).map((product) => (
             <TableRow key={product.name}>
-              <TableCell>{product.id}</TableCell>
+              <TableCell><div onContextMenu={ (event) => { removeFromList(product) }}>{product.id}</div></TableCell>
               <TableCell>{product.name}</TableCell>
               <TableCell align="right">{product.stock}</TableCell>
               <TableCell align="right">{product.unit}</TableCell>

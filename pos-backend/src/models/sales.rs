@@ -1,10 +1,10 @@
-use serde::{Serialize, Deserialize};
-use chrono::DateTime;
+use chrono::NaiveDateTime;
+use serde::{Deserialize, Serialize};
 use sqlx::FromRow;
 
 #[derive(Serialize, Deserialize, FromRow, Debug)]
-pub struct Sales{
-    pub date: DateTime,
-    pub profit: u32,
-    pub sales: u32,
+pub struct Sales {
+    pub date: NaiveDateTime,
+    pub profit: f32,
+    pub sales: f32,
 }

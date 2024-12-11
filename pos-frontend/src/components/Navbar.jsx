@@ -31,14 +31,48 @@ const Navbar = ({setTaxUpdate,update,setDayStart}) => {
             const cost = await fetch(`http://localhost:8080/cost`,{
                 method: "GET",
             });
-            const sales= await fetch(`http://localhost:8080/sales`,{
+            try {
+            const sales_response= await fetch(`http://localhost:8080/sales`,{
                 method: "GET",
             });
 
-            const profits = (await sales.json()) - (await cost.json()); 
+            const sales = await sales_response.json();
 
-            console.log(profits);
+            const profit = (sales) - (await cost.json()); 
+
+            
+            const now = new Date();
+            const offsetMinutes = now.getTimezoneOffset();
+            const localTime = new Date(now.getTime() - offsetMinutes * 60000);
+            const date = localTime.toISOString();
+            const dateTime = date.slice(0,-1);
+            
+            const daySales = {
+                "date" : dateTime,
+                "sales" : sales,
+                "profit" :  profit
+            };
+
+            console.log(daySales);
+                try{
+
+            const result = await fetch(`http://localhost:8080/dayend`,{
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(daySales),
+            });
+
+            console.log(result.status);
+
             setDayStart(false);
+                }catch(Err){
+                    console.log("Error updating daily sales", Err);
+                }
+            }catch (Err){
+                console.log("Error fetching sales", Err);
+            }
         }catch (Err){
             console.log("Error fetching profits", Err);
         }
