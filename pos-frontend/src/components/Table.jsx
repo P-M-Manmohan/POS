@@ -287,7 +287,7 @@ const makeNull = () => {
       }
           {products && Object.values(products).map((product) => (
             <TableRow key={product.name}>
-              <TableCell><div onContextMenu={ (event) => { removeFromList(product) }}>{product.id}</div></TableCell>
+              <TableCell><div onContextMenu={ () => { removeFromList(product) }}>{product.id}</div></TableCell>
               <TableCell>{product.name}</TableCell>
               <TableCell align="right">{product.stock}</TableCell>
               <TableCell align="right">{product.unit}</TableCell>
@@ -326,9 +326,14 @@ const makeNull = () => {
       />
       <span className="hidden md:block text-m font-bold "
       >Ceckout</span>
+
         
       </div>
       { invoice && <Invoice data={details}/> }
+      <div className="absolute flex flex-col bg-slate-100 items-center w-fit h-fit">
+      <h1>hello</h1>
+
+      </div>
       </>
   );
 }
