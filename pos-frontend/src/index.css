@@ -1,16 +1,38 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-/* Remove spinner in WebKit browsers (Chrome, Safari) */
-input[type="number"]::-webkit-outer-spin-button,
-input[type="number"]::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+html,body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: "Space Grotesk",sans-serif;
+    background: #0e0a59;
+    color: #ebeae8;
 }
 
-/* Remove spinner in Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
+#root {
+    height: 100%;
 }
 
+input{
+    border-width:0.18rem;
+    border-radius: 0.6rem;
+    margin: 0.5rem;
+    border-color: #4a20f5;
+    background: #ebeae8;
+    color: #02011a;
+}
+
+
+button{
+    background: #4a20f5;
+    border-width: 0.2rem;
+    border-color: #4a20f5;
+    padding:0.2rem 0.9rem 0.2rem 0.9rem;
+    border-radius: 2rem;
+}
+
+button:hover{
+    border-width: 0.2rem;
+    border-color: #5579fa;
+    background:#3a30fc;
+}
