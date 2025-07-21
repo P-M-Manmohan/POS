@@ -11,3 +11,4 @@ pub mod update_stock;
 pub mod check_sales;
 pub mod check_cost;
 pub mod day_end;
+pub mod login;

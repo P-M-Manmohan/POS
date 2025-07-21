@@ -12,6 +12,7 @@ use crate::controllers::update_stock;
 use crate::controllers::check_sales;
 use crate::controllers::check_cost;
 use crate::controllers::day_end;
+use crate::controllers::login;
 
 pub fn configure_routes(cfg: &mut web::ServiceConfig) {
 
@@ -29,6 +30,7 @@ pub fn configure_routes(cfg: &mut web::ServiceConfig) {
         .service(update_stock::update_stock)
         .service(check_sales::check_sales)
         .service(check_cost::check_cost)
-        .service(day_end::day_end);
+        .service(day_end::day_end)
+        .service(login::login);
 
 }
