@@ -1,0 +1,51 @@
+
+> pos-frontend@0.0.0 dist
+> npm run build && npm run electron-build
+
+
+> pos-frontend@0.0.0 build
+> vite build
+
+vite v5.4.21 building for production...
+transforming...
+✓ 461 modules transformed.
+rendering chunks...
+computing gzip size...
+dist/index.html                        0.46 kB │ gzip:   0.30 kB
+dist/assets/plus-0eWmDZe0.png          5.13 kB
+dist/assets/close-DvLCsTrv.png         8.35 kB
+dist/assets/box-DmPnQLnj.png          11.68 kB
+dist/assets/rupee-DfunutzM.png        13.79 kB
+dist/assets/percentage-CVwMwkAb.png   14.28 kB
+dist/assets/index-Bu3SYSZz.css        10.91 kB │ gzip:   2.88 kB
+dist/assets/index-Kje-B8_0.js        413.82 kB │ gzip: 134.41 kB
+✓ built in 3.17s
+
+> pos-frontend@0.0.0 electron-build
+> electron-builder --linux
+
+  • electron-builder  version=26.7.0 os=6.18.7-arch1-1
+  • loaded configuration  file=package.json ("build" field)
+  • description is missed in the package.json  appPackageFile=/home/salami/Documents/programs/POS/pos-frontend/package.json
+  • author is missed in the package.json  appPackageFile=/home/salami/Documents/programs/POS/pos-frontend/package.json
+  ⨯ Invalid configuration object. electron-builder 26.7.0 has been initialized using a configuration object that does not match the API schema.
+ - configuration has an unknown property 'ProductName'. These properties are valid:
+   object { afterAllArtifactBuild?, afterExtract?, afterPack?, afterSign?, apk?, appId?, appImage?, appx?, appxManifestCreated?, artifactBuildCompleted?, artifactBuildStarted?, artifactName?, asar?, asarUnpack?, beforeBuild?, beforePack?, buildDependenciesFromSource?, buildNumber?, buildVersion?, compression?, concurrency?, copyright?, cscKeyPassword?, cscLink?, deb?, defaultArch?, detectUpdateChannel?, directories?, disableDefaultIgnoredFiles?, disableSanityCheckAsar?, dmg?, downloadAlternateFFmpeg?, electronBranding?, electronCompile?, electronDist?, electronDownload?, electronFuses?, electronLanguages?, electronUpdaterCompatibility?, electronVersion?, executableName?, extends?, extraFiles?, extraMetadata?, extraResources?, fileAssociations?, files?, flatpak?, forceCodeSigning?, framework?, freebsd?, generateUpdatesFilesForAllChannels?, icon?, includePdb?, launchUiVersion?, linux?, mac?, mas?, masDev?, msi?, msiProjectCreated?, msiWrapped?, nativeRebuilder?, nodeGypRebuild?, nodeVersion?, npmArgs?, npmRebuild?, nsis?, nsisWeb?, onNodeModuleFile?, p5p?, pacman?, pkg?, portable?, productName?, protocols?, publish?, releaseInfo?, removePackageKeywords?, removePackageScripts?, rpm?, snap?, squirrelWindows?, target?, win?, $schema? }
+     How to fix:
+     1. Open https://www.electron.build/configuration
+     2. Search the option name on the page (or type in into Search to find across the docs).
+       * Not found? The option was deprecated or not exists (check spelling).
+       * Found? Check that the option in the appropriate place. e.g. "title" only in the "dmg", not in the root.
+  failedTask=build stackTrace=ValidationError: Invalid configuration object. electron-builder 26.7.0 has been initialized using a configuration object that does not match the API schema.
+ - configuration has an unknown property 'ProductName'. These properties are valid:
+   object { afterAllArtifactBuild?, afterExtract?, afterPack?, afterSign?, apk?, appId?, appImage?, appx?, appxManifestCreated?, artifactBuildCompleted?, artifactBuildStarted?, artifactName?, asar?, asarUnpack?, beforeBuild?, beforePack?, buildDependenciesFromSource?, buildNumber?, buildVersion?, compression?, concurrency?, copyright?, cscKeyPassword?, cscLink?, deb?, defaultArch?, detectUpdateChannel?, directories?, disableDefaultIgnoredFiles?, disableSanityCheckAsar?, dmg?, downloadAlternateFFmpeg?, electronBranding?, electronCompile?, electronDist?, electronDownload?, electronFuses?, electronLanguages?, electronUpdaterCompatibility?, electronVersion?, executableName?, extends?, extraFiles?, extraMetadata?, extraResources?, fileAssociations?, files?, flatpak?, forceCodeSigning?, framework?, freebsd?, generateUpdatesFilesForAllChannels?, icon?, includePdb?, launchUiVersion?, linux?, mac?, mas?, masDev?, msi?, msiProjectCreated?, msiWrapped?, nativeRebuilder?, nodeGypRebuild?, nodeVersion?, npmArgs?, npmRebuild?, nsis?, nsisWeb?, onNodeModuleFile?, p5p?, pacman?, pkg?, portable?, productName?, protocols?, publish?, releaseInfo?, removePackageKeywords?, removePackageScripts?, rpm?, snap?, squirrelWindows?, target?, win?, $schema? }
+     How to fix:
+     1. Open https://www.electron.build/configuration
+     2. Search the option name on the page (or type in into Search to find across the docs).
+       * Not found? The option was deprecated or not exists (check spelling).
+       * Found? Check that the option in the appropriate place. e.g. "title" only in the "dmg", not in the root.
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  at validate (/home/salami/Documents/programs/POS/pos-frontend/node_modules/@develar/schema-utils/dist/validate.js:86:11)
+    at validateConfiguration (/home/salami/Documents/programs/POS/pos-frontend/node_modules/app-builder-lib/src/util/config/config.ts:239:3)
+    at Packager.validateConfig (/home/salami/Documents/programs/POS/pos-frontend/node_modules/app-builder-lib/src/packager.ts:398:5)
+    at Packager.build (/home/salami/Documents/programs/POS/pos-frontend/node_modules/app-builder-lib/src/packager.ts:406:5)
+    at executeFinally (/home/salami/Documents/programs/POS/pos-frontend/node_modules/builder-util/src/promise.ts:12:14)

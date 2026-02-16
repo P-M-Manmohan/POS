@@ -2,14 +2,34 @@
   "name": "pos-frontend",
   "private": true,
   "version": "0.0.0",
+  "description": "Point of Sale system for billing and inventory",
+    "homepage": "https://github.com/P-M-Manmohan/POS.com",
+    "author": {
+    "name": "Manmohan P M",
+    "email": "manmohanpm65@gmail.com"
+    },
   "main": "electron.js",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
+    "electron-build": "electron-builder --linux",
     "lint": "eslint .",
     "preview": "vite preview",
-    "electron": "NODE_ENV=development electron ."
+    "electron": "NODE_ENV=development electron .",
+     "dist": "npm run build && npm run electron-build"
+  },
+  "build": {
+      "appId": "com.manmohan.pos",
+      "productName": "Manmohan POS",
+      "linux": {
+          "target": [
+              "AppImage",
+              "deb"
+          ],
+          "category": "Office",
+          "maintainer": "Manmohan P M <manmohanpm65@gmail.com>"
+      }
   },
   "dependencies": {
     "@emotion/react": "^11.13.3",
@@ -22,7 +42,6 @@
     "@mui/icons-material": "^6.1.6",
     "@mui/material": "^6.1.6",
     "axios": "^1.7.7",
-    "electron": "^33.1.0",
     "pdf-to-printer": "^5.6.0",
     "pdfkit": "^0.15.1",
     "react": "^18.3.1",
